@@ -1,0 +1,6 @@
+@WeBlog.Auth_HostAddress = http://localhost:5160
+
+GET {{WeBlog.Auth_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
