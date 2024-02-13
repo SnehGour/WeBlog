@@ -12,9 +12,11 @@
             <div class="col-md-12 mb-4">
                 <div class="card">
                     <div class="card-body">
+                        <hr/>
                         <h5 class="card-title">@post.Title</h5>
                         <h6 class="card-subtitle mb-2 text-muted">@post.SubTitle</h6>
-                        <p class="card-text">Posted on: @post.IsCreatedAt</p>
+                        <span class="card-text">Posted on: @post.IsCreatedAt</span>
+                        <span class="text-black-50 float-end"> Post by: @User.Identity.Name</span>
                         <hr />
                         <p class="card-text">@Html.Raw(post.Content)</p>
                         <hr />

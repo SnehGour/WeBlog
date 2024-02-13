@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using NuGet.Protocol;
 using WeBlog.Application.Contracts;
 using WeBlog.Contracts.Contracts;
 using WeBlog.Entities.Models;
@@ -31,13 +32,11 @@ builder.Services.AddScoped<IPost,PostService>();
 
 // Authentication
 
-
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
-        options.ExpireTimeSpan = TimeSpan.FromHours(1);
-        options.LoginPath = "/Auth/Login";
-        options.AccessDeniedPath = "/Auth/AccessDenied";
+        options.LoginPath = "/Account/Login";
+        options.AccessDeniedPath = "/Account/AccessDenied";
     });
 
 var app = builder.Build();
@@ -53,11 +52,11 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
-app.UseRouting();
-app.UseAuthentication();
+app.UseRouting(); // Identifting Action Method based route
+app.UseAuthentication(); // Reading Identity Cookie
 app.UseAuthorization();
 
-app.MapControllerRoute(
+app.MapControllerRoute(   // Execute the filter pipeline(action+filter)
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 

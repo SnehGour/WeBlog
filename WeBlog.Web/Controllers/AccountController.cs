@@ -4,42 +4,46 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using WeBlog.Contracts.Contracts;
 using WeBlog.Entities.Models.DTOs;
+using Microsoft.AspNetCore.Identity;
+using WeBlog.Entities.Models;
 
 namespace WeBlog.Web.Controllers
 {
     public class AccountController : Controller
     {
         readonly IAuth _authService;
-        public AccountController(IAuth authService)
+        readonly SignInManager<AppUser> _signInManager;
+        public AccountController(IAuth authService,
+            SignInManager<AppUser> signInManager)
         {
             _authService = authService;
+            _signInManager = signInManager;
         }
         #region Login
         [HttpGet]
         public IActionResult Login()
         {
+
             return View();
         }
 
         [HttpPost]
         public async Task<IActionResult> Login(LoginRequestDTO loginRequestDTO)
         {
-            var user = await _authService.LoginAsync(loginRequestDTO);
-            if (user == null)
+            if (ModelState.IsValid)
             {
-                return View();
+                var user = await _authService.LoginAsync(loginRequestDTO);
+                if (user != null)
+                {
+                    // After Cheking Creadentials
+                    await _signInManager.SignInAsync(user, isPersistent: false);
+
+                    return RedirectToAction("Index", "Home");
+                }
             }
+            TempData["error"] = "InValid UserName or Password";
+            return View();
 
-            // creating Identity
-            var identity = new ClaimsIdentity(new[] {
-                    new Claim(ClaimTypes.Name, user.Name)
-                }, CookieAuthenticationDefaults.AuthenticationScheme);
-
-            var principal = new ClaimsPrincipal(identity);
-
-            var login = HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
-
-            return RedirectToAction("Index", "Home");
         }
 
         #endregion
@@ -54,14 +58,22 @@ namespace WeBlog.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Register(RegisterRequestDTO registerRequestDTO)
         {
-            await _authService.RegisterAsync(registerRequestDTO);
-            return RedirectToAction("Index", "Home");
+            if(ModelState.IsValid)
+            {
+                await _authService.RegisterAsync(registerRequestDTO);
+                return RedirectToAction("Index", "Home");
+            }
+            return View();
         }
 
         #endregion
-        public void Logout()
+        [HttpGet]
+        public async Task<IActionResult> Logout()
         {
+            await _signInManager.SignOutAsync();
 
+            TempData["error"] = "You are Logged Out";
+            return RedirectToAction("Login");
         }
     }
 }

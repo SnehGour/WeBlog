@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using WeBlog.Application.Contracts;
 using WeBlog.Entities.Models;
 using WeBlog.Entities.Models.DTOs;
 
 namespace WeBlog.Web.Controllers
 {
+    [Authorize]
     public class PostController : Controller
     {
         private readonly IPost _postService;

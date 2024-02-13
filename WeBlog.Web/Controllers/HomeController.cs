@@ -23,6 +23,7 @@ namespace WeBlog.Web.Controllers
 
         public async Task<IActionResult> Index()
         {
+            TempData["success"] = "You are Logged In";
             var postList = await _postService.GetAllAsync(); 
             return View(postList);
         }

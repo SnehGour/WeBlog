@@ -26,7 +26,7 @@ namespace WeBlog.Repository
         }
         public async Task<AppUser> LoginAsync(LoginRequestDTO loginRequestDTO)
         {
-            var user = await _context.AppUsers.FirstOrDefaultAsync(user => user.Email == loginRequestDTO.Username);
+            var user = await _context.AppUsers.FirstOrDefaultAsync(x => x.Email == loginRequestDTO.Username);
             bool isValid = await _userManager.CheckPasswordAsync(user, loginRequestDTO.Password);
 
             if (user == null || isValid == false)
@@ -44,15 +44,16 @@ namespace WeBlog.Repository
                 Email = registerRequestDTO.Email,
                 PhoneNumber = registerRequestDTO.PhoneNumber,
                 NormalizedUserName = registerRequestDTO.Name,
-                Name=registerRequestDTO.Email,
-                UserName=registerRequestDTO.Name,
+                Name = registerRequestDTO.Email,
+                UserName = registerRequestDTO.Name,
             };
 
             try
             {
                 var result = await _userManager.CreateAsync(user, registerRequestDTO.Password);
-                
-            }catch(Exception ex)
+
+            }
+            catch (Exception ex)
             {
                 return;
             }
