@@ -1,0 +1,49 @@
+﻿@using WeBlog.Entities.Models;
+@model Post;
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit Post</h1>
+<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+<div class="container">
+    <form asp-action="Edit" method="post">
+        <div class="mb-3">
+            <label asp-for="@Model.Title" class="form-label">Title</label>
+            <input type="text" class="form-control" asp-for="@Model.Title" value="@Model.Title">
+        </div>
+        <div class="mb-3">
+            <label asp-for="@Model.SubTitle" class="form-label">Sub Title</label>
+            <input type="text" class="form-control" asp-for="@Model.SubTitle" value="@Model.SubTitle">
+        </div>
+        <div class="mb-3">
+            <label asp-for="@Model.Content" class="form-label">Content</label>
+            <div id="editor" style="height: 300px;">
+                @Html.Raw(@Model.Content)
+            </div>
+            <input type="hidden" id="content" name="Content" />
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <a asp-action="Index" asp-controller="Home" class="btn btn-dark w-100">Back</a>
+            </div>
+            <div class="col-6">
+                <button type="submit" class="btn btn-primary w-100">Update</button>
+            </div>
+        </div>
+        
+    </form>
+</div>
+
+<script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
+<script>
+    var quill = new Quill('#editor', {
+        theme: 'snow'
+    });
+
+    document.querySelector('form').onsubmit = function () {
+        var editorContent = document.querySelector('#editor .ql-editor').innerHTML;
+        document.querySelector('#content').value = editorContent;
+    };
+</script>

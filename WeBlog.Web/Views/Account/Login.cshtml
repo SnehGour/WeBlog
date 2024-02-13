@@ -1,0 +1,30 @@
+﻿@model WeBlog.Entities.Models.DTOs.LoginRequestDTO;
+
+@{
+    ViewData["Title"] = "Login";
+}
+
+
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-12 text-center">
+            <h1>Login</h1>
+        </div>
+        <div class="col-md-6">
+            <form method="post" asp-action="Login">
+                <div class="mb-3">
+                    <label asp-for="@Model.Username" class="form-label">Username</label>
+                    <input type="text" class="form-control" asp-for="@Model.Username">
+                </div>
+                <div class="mb-3">
+                    <label asp-for="@Model.Password" class="form-label">Password</label>
+                    <input type="password" class="form-control" asp-for="@Model.Password">
+                </div>
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary w-100">Login</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
