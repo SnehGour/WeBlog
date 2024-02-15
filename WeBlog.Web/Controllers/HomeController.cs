@@ -23,20 +23,8 @@ namespace WeBlog.Web.Controllers
 
         public async Task<IActionResult> Index()
         {
-            TempData["success"] = "You are Logged In";
             var postList = await _postService.GetAllAsync(); 
             return View(postList);
-        }
-
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
 }

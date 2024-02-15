@@ -1,0 +1,25 @@
+﻿@using WeBlog.Entities.Models;
+@model Post;
+
+@{
+    ViewData["Title"] = "Post Details";
+}
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card">
+                <div class="card-body">
+                    <h1 class="card-title">@Model.Title</h1>
+                    <h2 class="card-subtitle mb-2 text-muted">@Model.SubTitle</h2>
+                    <hr />
+                    <div class="card-text">@Html.Raw(Model.Content)</div>
+                </div>
+                <div class="card-footer text-muted">
+@*                     <a asp-action="Edit" asp-controller="Post" asp-route-id="@Model.Id" class="btn btn-info float-start">Edit</a>
+ *@                    <p class="text-end">Posted on: @DateTime.Now.ToString("MMMM dd, yyyy")</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

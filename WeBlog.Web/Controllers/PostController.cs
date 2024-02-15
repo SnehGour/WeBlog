@@ -64,6 +64,7 @@ namespace WeBlog.Web.Controllers
             {
                 return View();
             }
+            TempData["success"] = "Updated successfully";
             return RedirectToAction("Index", "Home");
         }
 
@@ -91,5 +92,19 @@ namespace WeBlog.Web.Controllers
             await _postService.DeleteAsync(post.Id);
             return RedirectToAction("Index", "Home");
         }
+
+        #region Details
+        [HttpGet]
+        public async Task<IActionResult> Details(string id)
+        {
+            var isValid = Guid.TryParse(id, out Guid postId);
+            if (isValid)
+            {
+                var post = await _postService.GetPostByIdAsync(postId);
+                return View(post);
+            }
+            return View("Error");
+        }
+        #endregion
     }
 }

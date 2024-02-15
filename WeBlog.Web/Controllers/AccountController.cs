@@ -38,6 +38,7 @@ namespace WeBlog.Web.Controllers
                     // After Cheking Creadentials
                     await _signInManager.SignInAsync(user, isPersistent: false);
 
+                    TempData["success"] = "You are Logged In";
                     return RedirectToAction("Index", "Home");
                 }
             }
@@ -58,7 +59,7 @@ namespace WeBlog.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Register(RegisterRequestDTO registerRequestDTO)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 await _authService.RegisterAsync(registerRequestDTO);
                 return RedirectToAction("Index", "Home");
