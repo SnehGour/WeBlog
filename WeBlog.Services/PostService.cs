@@ -43,6 +43,11 @@ namespace WeBlog.Services
             return _postRepository.GetUserById(userId);
         }
 
+        public async Task<IEnumerable<Post>> SearchAsync(Search searchText)
+        {
+            return await _postRepository.SearchAsync(searchText);
+        }
+
         public async Task<bool> UpdateAsync(Guid id, Post post)
         {
             var isUpdated = await _postRepository.UpdateAsync(id, post);

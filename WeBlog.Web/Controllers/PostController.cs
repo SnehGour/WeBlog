@@ -161,5 +161,16 @@ namespace WeBlog.Web.Controllers
         }
         #endregion
 
+        #region Search
+
+        [HttpPost]
+        public async Task<IActionResult> Search(Search text)
+        {  
+            var posts =await _postService.SearchAsync(text);
+            var postListDto = _mapper.Map<List<PostDTO>>(posts);
+            ViewData["SearchData"] = text.SearchText;
+            return View(postListDto);
+        }
+        #endregion
     }
 }

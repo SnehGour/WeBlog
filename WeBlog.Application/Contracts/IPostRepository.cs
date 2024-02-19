@@ -16,5 +16,6 @@ namespace WeBlog.Contracts.Contracts
         Task<Post> GetPostByIdAsync(Guid id);
         Task DeleteAsync(Guid id);
         Task<IEnumerable<Post>> GetUserById(string id);
+        Task<IEnumerable<Post>> SearchAsync(Search searchText);
     }
 }

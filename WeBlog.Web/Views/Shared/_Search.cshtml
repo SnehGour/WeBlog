@@ -1,0 +1,6 @@
+﻿@model Search
+
+<form asp-action="Search" asp-controller="Post" method="post" style=" display:inline!important;">
+    <input asp-for="@Model.SearchText" style="padding:5px;border:2px solid black;">
+    <button class="btn btn-primary" type="submit"><i class="fa fa-search"></i></button>
+</form>

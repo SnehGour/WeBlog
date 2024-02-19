@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using NuGet.Protocol;
+using System.Text.Json.Serialization;
 using WeBlog.Application.Contracts;
 using WeBlog.Contracts.Contracts;
 using WeBlog.Entities.Models;
@@ -14,7 +15,10 @@ using WeBlog.Web.Mapping;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews().AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+});
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {

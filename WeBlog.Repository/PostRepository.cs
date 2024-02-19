@@ -37,7 +37,7 @@ namespace WeBlog.Repository
 
         public async Task<IEnumerable<Post>> GetAllPostAsync()
         {
-            var allPostList = await _context.Posts.ToListAsync();
+            var allPostList = await _context.Posts.Include(user=>user.AppUser).ToListAsync();
             /*            List<PostDTO> posts = new List<PostDTO>();
                         foreach (var post in allPostList)
                         {
@@ -46,7 +46,6 @@ namespace WeBlog.Repository
 
             return allPostList;
         }
-
 
         public async Task<Post> GetPostByIdAsync(Guid id)
         {
@@ -62,6 +61,16 @@ namespace WeBlog.Repository
         {
             var postList = await _context.Posts.Where(post => post.AppUserId == id).ToListAsync(); 
             return postList;
+        }
+
+        public async Task<IEnumerable<Post>> SearchAsync(Search searchText)
+        {
+            var posts = await _context.Posts.
+                                Where(post => post.Title.Contains(searchText.SearchText) ||
+                                    post.SubTitle.Contains(searchText.SearchText) || post.AppUser.UserName.ToLower() == searchText.SearchText.ToLower())
+                                .ToListAsync();
+
+            return posts;   
         }
 
         public async Task<bool> UpdateAsync(Guid id, Post post)

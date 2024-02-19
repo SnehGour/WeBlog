@@ -16,6 +16,7 @@ namespace WeBlog.Entities.Models.DTOs
         public DateTime IsUpdatedAt { get; set; } 
         public DateTime IsCreatedAt {  get; set; }
         public string AppUserId { get; set; }
+        public AppUser AppUser { get; set; }
 
     }
 }

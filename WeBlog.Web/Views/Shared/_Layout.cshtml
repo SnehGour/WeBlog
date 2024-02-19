@@ -31,7 +31,6 @@
                                 <li class="nav-item">
                                     <a class="nav-link" asp-controller="Account" asp-action="Register">Register</a>
                                 </li>
-
                             }
                             else
                             {
@@ -67,12 +66,14 @@ else
                             aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
+
                     <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                         <ul class="navbar-nav flex-grow-1">
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Post" asp-action="Index">Create</a>
                             </li>
                         </ul>
+
                         <ul class="navbar-nav">
                             <li class="nav-item">
                                 <a class="nav-link" href="#">Hello, @User.Identity.Name</a>
@@ -80,6 +81,9 @@ else
                             <li class="nav-item">
                                 <a class="nav-link" asp-controller="Account" asp-action="Logout">Logout</a>
                             </li>
+                        </ul>
+
+                        <partial name="_Search" model="new Search()"/>
                     </div>
                 </div>
             </nav>
