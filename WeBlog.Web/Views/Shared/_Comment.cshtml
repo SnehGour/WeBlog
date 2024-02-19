@@ -1,0 +1,39 @@
+﻿@using WeBlog.Entities.Models
+@model Post;
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="mb-3">
+                <input hidden id="post-id" value="@Model.Id"/>
+                <label for="comment" class="form-label">Write your comment:</label>
+                <textarea class="form-control" id="comment" rows="3"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary" id="comment-button">Comment</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    
+    document.querySelector('#comment-button')
+        .addEventListener("click", async function () {
+             
+            var comment = document.querySelector('#comment').value;
+            var post = document.querySelector('#post-id').value;
+            var payload = { 'Message': comment, 'PostId':post};
+            $.ajax('/Comment/Create',
+                {
+                    cache: false, async: false, type: 'POST',
+                    data: payload,
+                    dataType: 'json',
+                    success: function (response) {
+                        console.log('sucess');
+                        alert('sdfsdfsd');
+                    },
+                    error: function (err) {
+                        window.location.reload();
+                    }
+                });
+        })
+</script>

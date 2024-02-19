@@ -24,6 +24,12 @@ namespace WeBlog.Repository
             _context = context;
             _userManager = userManager;
         }
+
+        public async Task<AppUser> GetUserById(string id)
+        {
+             return await _context.AppUsers.FirstOrDefaultAsync(user=>user.Id == id);
+        }
+
         public async Task<AppUser> LoginAsync(LoginRequestDTO loginRequestDTO)
         {
             var user = await _context.AppUsers.FirstOrDefaultAsync(x => x.Email == loginRequestDTO.Username);

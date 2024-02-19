@@ -1,5 +1,6 @@
-﻿@using WeBlog.Entities.Models;
-@model Post;
+﻿@using WeBlog.Entities.Models.DTOs
+@using WeBlog.Entities.Models.ViewModel;
+@model CommentViewModel;
 
 @{
     ViewData["Title"] = "Post Details";
@@ -10,16 +11,18 @@
         <div class="col-md-8 offset-md-2">
             <div class="card">
                 <div class="card-body">
-                    <h1 class="card-title">@Model.Title</h1>
-                    <h2 class="card-subtitle mb-2 text-muted">@Model.SubTitle</h2>
+                    <h1 class="card-title">@Model.Post.Title</h1>
+                    <h2 class="card-subtitle mb-2 text-muted">@Model.Post.SubTitle</h2>
                     <hr />
-                    <div class="card-text">@Html.Raw(Model.Content)</div>
+                    <div class="card-text">@Html.Raw(Model.Post.Content)</div>
                 </div>
                 <div class="card-footer text-muted">
-@*                     <a asp-action="Edit" asp-controller="Post" asp-route-id="@Model.Id" class="btn btn-info float-start">Edit</a>
- *@                    <p class="text-end">Posted on: @DateTime.Now.ToString("MMMM dd, yyyy")</p>
+                    <p class="text-end">Posted on: @Model.Post.IsCreatedAt</p>
+                    @*                     <a asp-action="Edit" asp-controller="Post" asp-route-id="@Model.Id" class="btn btn-info float-start">Edit</a>*@
                 </div>
             </div>
         </div>
     </div>
 </div>
+<partial name="_Comment" model="@Model.Post" />
+<partial name="_ViewAllComments" model="@Model" />

@@ -1,0 +1,77 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Collapsible Side Navbar</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Style for sidebar */
+        .sidebar {
+            height: 100%;
+            width: 250px;
+            position: fixed;
+            top: 0;
+            left: -250px;
+            background-color: #f8f9fa;
+            padding-top: 50px;
+            transition: all 0.3s ease;
+            z-index: 1;
+        }
+
+            .sidebar.show {
+                left: 0;
+            }
+
+            .sidebar ul li {
+                padding: 15px;
+                border-bottom: 1px solid #ddd;
+            }
+
+                .sidebar ul li a {
+                    text-decoration: none;
+                    color: #333;
+                }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link" href="#">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">About</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Services</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Contact</a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Content -->
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-3">
+                <button class="btn btn-primary" onclick="toggleSidebar()">Toggle Sidebar</button>
+            </div>
+            <div class="col-md-9">
+                <h1>Main Content Area</h1>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('show');
+        }
+    </script>
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

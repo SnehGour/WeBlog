@@ -20,3 +20,32 @@ html {
 body {
   margin-bottom: 60px;
 }
+/* Style for sidebar */
+.sidebar {
+    height: 100%;
+    width: 250px;
+    position: fixed;
+    top: 0;
+    left: -250px;
+    background-color: #f8f9fa;
+    padding-top: 50px;
+    transition: all 0.3s ease;
+    z-index: 1;
+}
+
+    .sidebar.show {
+        left: 0;
+    }
+
+    .sidebar ul li {
+        padding: 15px;
+        border-bottom: 1px solid #ddd;
+    }
+
+        .sidebar ul li a {
+            text-decoration: none;
+            color: #333;
+        }
+.post-body{
+    margin-top:-175px;
+}

@@ -10,10 +10,11 @@ namespace WeBlog.Application.Contracts
 {
     public interface IPost
     {
-        Task CreateAsync(PostDTO postDTO);
+        Task CreateAsync(Post post);
         Task<Post> GetPostByIdAsync(Guid id);
         Task<IEnumerable<Post>> GetAllAsync();
-        Task<bool> UpdateAsync(Guid id, PostDTO postDTO);
+        Task<bool> UpdateAsync(Guid id, Post post);
         Task DeleteAsync(Guid id);
+        Task<IEnumerable<Post>> GetPostByUserId(string userId);
     }
 }

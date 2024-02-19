@@ -1,3 +1,4 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -8,6 +9,7 @@ using WeBlog.Entities.Models;
 using WeBlog.Repository;
 using WeBlog.Repository.Data;
 using WeBlog.Services;
+using WeBlog.Web.Mapping;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,9 +26,13 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddIdentity<AppUser,IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
-
+// Repository
 builder.Services.AddScoped<IPostRepository,PostRepository>();
+builder.Services.AddScoped<ICommentRepository,CommentRepository>();
+
+// Services
 builder.Services.AddScoped<IAuth,AuthService>();
+builder.Services.AddScoped<IComment,CommentService>();
 builder.Services.AddScoped<IPost,PostService>();
 
 
@@ -38,6 +44,12 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         options.LoginPath = "/Account/Login";
         options.AccessDeniedPath = "/Account/AccessDenied";
     });
+
+
+// Automapper
+IMapper mapper = MappingConfig.RegisterMaps().CreateMapper();
+builder.Services.AddSingleton(mapper);
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 var app = builder.Build();
 

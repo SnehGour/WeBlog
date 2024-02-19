@@ -19,24 +19,15 @@ namespace WeBlog.Repository
             _context = context;
         }
 
-        public async Task CreateAsync(PostDTO postDTO)
+        public async Task CreateAsync(Post post)
         {
-            var post = new Post
-            {
-                Content = postDTO.Content,
-                SubTitle = postDTO.SubTitle,
-                Title = postDTO.Title,
-                IsUpdatedAt = DateTime.Now,
-                Id = Guid.NewGuid(),
-
-            };
             _context.Posts.Add(post);
             await _context.SaveChangesAsync();
         }
 
         public async Task DeleteAsync(Guid id)
         {
-            var post = await _context.Posts.FirstOrDefaultAsync(x=>x.Id == id);
+            var post = await _context.Posts.FirstOrDefaultAsync(x => x.Id == id);
             if (post != null)
             {
                 _context.Posts.Remove(post);
@@ -47,32 +38,43 @@ namespace WeBlog.Repository
         public async Task<IEnumerable<Post>> GetAllPostAsync()
         {
             var allPostList = await _context.Posts.ToListAsync();
-            /*List<PostDTO> posts = new List<PostDTO>();
-            foreach (var post in allPostList)
-            {
-                posts.Add(post.GetDTO());
-            }
-*/
+            /*            List<PostDTO> posts = new List<PostDTO>();
+                        foreach (var post in allPostList)
+                        {
+                            posts.Add(post.GetDTO());
+                        }*/
+
             return allPostList;
         }
 
-     
+
         public async Task<Post> GetPostByIdAsync(Guid id)
         {
-            return await _context.Posts.FirstOrDefaultAsync(x => x.Id == id);
+            var post = await _context.Posts.FirstOrDefaultAsync(x => x.Id == id);
+            if (post != null)
+            {
+                return post;
+            }
+            return null;
         }
 
-        public async Task<bool> UpdateAsync(Guid id, PostDTO postDTO)
+        public async Task<IEnumerable<Post>> GetUserById(string id)
         {
-            var post = await _context.Posts.FirstOrDefaultAsync(x => x.Id == id);
-            if (post == null)
+            var postList = await _context.Posts.Where(post => post.AppUserId == id).ToListAsync(); 
+            return postList;
+        }
+
+        public async Task<bool> UpdateAsync(Guid id, Post post)
+        {
+            var obj = await _context.Posts.FirstOrDefaultAsync(x => x.Id == id);
+            if (obj == null)
             {
                 return false;
             }
-            post.Title = postDTO.Title;
-            post.Content = postDTO.Content;
-            post.SubTitle = postDTO.SubTitle;
-            post.IsUpdatedAt = DateTime.Now;
+            obj.Title = post.Title;
+            obj.Content = post.Content;
+            obj.SubTitle = post.SubTitle;
+            obj.IsUpdatedAt = DateTime.Now;
 
             _context.Update(post);
             await _context.SaveChangesAsync();

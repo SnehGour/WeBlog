@@ -17,9 +17,9 @@ namespace WeBlog.Services
         {
             _postRepository = postRepository;
         }
-        public async Task CreateAsync(PostDTO postDTO)
+        public async Task CreateAsync(Post post)
         {
-            await _postRepository.CreateAsync(postDTO);
+            await _postRepository.CreateAsync(post);
         }
 
         public async Task DeleteAsync(Guid id)
@@ -29,17 +29,23 @@ namespace WeBlog.Services
 
         public async Task<IEnumerable<Post>> GetAllAsync()
         {
-            return await _postRepository.GetAllPostAsync();
+            var posts = await _postRepository.GetAllPostAsync();
+            return posts;
         }
 
-        public Task<Post> GetPostByIdAsync(Guid id)
+        public async Task<Post> GetPostByIdAsync(Guid id)
         {
-            return _postRepository.GetPostByIdAsync(id);
+            return await _postRepository.GetPostByIdAsync(id);
         }
 
-        public async Task<bool> UpdateAsync(Guid id, PostDTO postDTO)
+        public Task<IEnumerable<Post>> GetPostByUserId(string userId)
         {
-            var isUpdated = await _postRepository.UpdateAsync(id, postDTO);
+            return _postRepository.GetUserById(userId);
+        }
+
+        public async Task<bool> UpdateAsync(Guid id, Post post)
+        {
+            var isUpdated = await _postRepository.UpdateAsync(id, post);
             return isUpdated;
         }
     }

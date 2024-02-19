@@ -1,15 +1,15 @@
-﻿@using WeBlog.Entities.Models.DTOs;
-@model IEnumerable<PostDTO>;
+﻿@using WeBlog.Entities.Models;
+@model IEnumerable<Post>;
 
 @{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "My Posts";
 }
 
 <div class="container">
     <div class="row">
         @if (Model.Any())
         {
-            @foreach (PostDTO post in Model)
+            @foreach (Post post in Model)
             {
                 <div class="col-md-12 mb-4">
                     <div class="card">
@@ -18,7 +18,7 @@
                             <a asp-action="Details" asp-controller="Post" asp-route-id="@post.Id" class="card-title link-dark text-decoration-none display-6">@post.Title</a>
                             <h6 class="card-subtitle mb-2 text-muted">@post.SubTitle</h6>
                             <span class="card-text">Posted on: @post.IsCreatedAt</span>
-                            <span class="text-black-50 float-end"> <i class="fa-solid fa-circle-user fa-xl"></i>@post.AppUserId</span>
+                            <span class="text-black-50 float-end"> <i class="fa-solid fa-circle-user fa-xl"></i>  @User.Identity.Name</span>
                             <hr />
                             @if (post.Content.Length > 100)
                             {

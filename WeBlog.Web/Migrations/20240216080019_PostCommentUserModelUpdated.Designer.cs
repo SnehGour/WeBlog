@@ -12,8 +12,8 @@ using WeBlog.Repository.Data;
 namespace WeBlog.Web.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240213141535_Initial")]
-    partial class Initial
+    [Migration("20240216080019_PostCommentUserModelUpdated")]
+    partial class PostCommentUserModelUpdated
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -184,7 +184,6 @@ namespace WeBlog.Web.Migrations
                         .HasColumnType("datetimeoffset");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("NormalizedEmail")
@@ -227,11 +226,43 @@ namespace WeBlog.Web.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("WeBlog.Entities.Models.Comment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AppUserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("PostId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AppUserId");
+
+                    b.HasIndex("PostId");
+
+                    b.ToTable("Comments");
+                });
+
             modelBuilder.Entity("WeBlog.Entities.Models.Post", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("AppUserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Content")
                         .IsRequired()
@@ -250,17 +281,9 @@ namespace WeBlog.Web.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Posts");
+                    b.HasIndex("AppUserId");
 
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("a95e4951-f0ed-413f-9738-e6ef89dbd254"),
-                            Content = "A .NET stack is a software development stack that uses Microsoft's .NET framework and the C# language to build software applications. It also uses an IDE like Visual Studio or VS Code, Windows OS, databases, and backend",
-                            IsUpdatedAt = new DateTime(2024, 2, 13, 19, 45, 35, 209, DateTimeKind.Local).AddTicks(4320),
-                            SubTitle = "All technology under .NET umbrela",
-                            Title = ".NET Stack"
-                        });
+                    b.ToTable("Posts");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -312,6 +335,46 @@ namespace WeBlog.Web.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("WeBlog.Entities.Models.Comment", b =>
+                {
+                    b.HasOne("WeBlog.Entities.Models.AppUser", "AppUser")
+                        .WithMany("Comments")
+                        .HasForeignKey("AppUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("WeBlog.Entities.Models.Post", "Post")
+                        .WithMany("Comments")
+                        .HasForeignKey("PostId");
+
+                    b.Navigation("AppUser");
+
+                    b.Navigation("Post");
+                });
+
+            modelBuilder.Entity("WeBlog.Entities.Models.Post", b =>
+                {
+                    b.HasOne("WeBlog.Entities.Models.AppUser", "AppUser")
+                        .WithMany("Post")
+                        .HasForeignKey("AppUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AppUser");
+                });
+
+            modelBuilder.Entity("WeBlog.Entities.Models.AppUser", b =>
+                {
+                    b.Navigation("Comments");
+
+                    b.Navigation("Post");
+                });
+
+            modelBuilder.Entity("WeBlog.Entities.Models.Post", b =>
+                {
+                    b.Navigation("Comments");
                 });
 #pragma warning restore 612, 618
         }

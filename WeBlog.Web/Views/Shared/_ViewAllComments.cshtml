@@ -1,0 +1,26 @@
+﻿@using WeBlog.Entities.Models.ViewModel;
+@model CommentViewModel 
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-8">
+            <h1>Comments</h1>
+            @if (Model.Comments.Any())
+            {
+                foreach (var comment in Model.Comments)
+                {
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title text-muted"><i class="fa-solid fa-circle-user fa-xl"></i> @comment.UserName</h5>
+                            <p class="card-text">@comment.Message</p>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <p>No comments found.</p>
+            }
+        </div>
+    </div>
+</div>
